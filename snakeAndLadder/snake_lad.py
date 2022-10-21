@@ -8,6 +8,24 @@ class Player:
         self.position_history = []
         self.grid = grid_size
         self.winner = 0
+        self.twod_history = []
+        start = 0
+        cols = 1
+        for i in range(self.grid):  # 1  Maybe 5 mins
+            rows = []
+            if start == 0:
+                for j in range(1, self.grid + 1):
+                    rows.append((j, cols))
+                start = 1
+            else:
+                for j in range(self.grid, 0, -1):
+                    rows.append((j, cols))
+                start = 0
+            cols += 1
+            self.twod_history.append(rows)
+
+        self.twod_history = [j for i in self.twod_history for j in i]  # 2 2-3 mins
+        self.pos_2d = []
 
     def roll(self, dice):
         self.dice_history.append(dice)
@@ -19,8 +37,10 @@ class Player:
             new_position = recent_position
         if new_position <= self.grid**2:
             self.position_history.append(new_position)
+            self.pos_2d.append(self.twod_history[new_position - 1])  # 3
         else:
             self.position_history.append(recent_position)
+            self.pos_2d.append(self.twod_history[recent_position - 1])  # 3
 
     def __str__(self):
         return f"Player - {self.name}"
@@ -48,7 +68,7 @@ def play():
 
     for player in players:
         print(
-            f"{player}  dice_history : {player.dice_history}  position_history : {player.position_history}  winner_status : {player.winner}"
+            f"Player : {player}  dice_history : {player.dice_history}  position_history : {player.position_history}  winner_status : {player.winner}   Two_d_position : {player.pos_2d}"
         )
 
 
