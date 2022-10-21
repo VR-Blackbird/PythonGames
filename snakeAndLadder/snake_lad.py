@@ -1,4 +1,5 @@
 from random import randint
+from itertools import chain
 
 
 class Player:
@@ -24,7 +25,7 @@ class Player:
             cols += 1
             self.twod_history.append(rows)
 
-        self.twod_history = [j for i in self.twod_history for j in i]  # 2 2-3 mins
+        self.twod_history = list(chain(*self.twod_history))  # 2 2-3 mins
         self.pos_2d = []
 
     def roll(self, dice):
